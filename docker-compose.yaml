@@ -1,0 +1,11 @@
+services:
+  profile-front:
+    build: ./profile/
+    expose:
+     - "4200"
+     - "49153"
+     - "9876"
+     - "49152"
+    volumes:
+     - ./profile:/usr/src/app  
+
