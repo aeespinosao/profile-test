@@ -9,6 +9,6 @@ export class ProfileService {
   constructor(private http: HttpClient) { }
 
   getProfile(username: string){
-    return this.http.get(`http://localhost:8000/profile/${username}/`)
+    return this.http.get(`http://3.129.120.166:8000/profile/${username}/`)
   }
 }
