@@ -13,16 +13,12 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.contrib import admin
 from django.urls import path
 
 from view.profile import ProfileView
 
-urlpatterns = [
-    path('admin/', admin.site.urls),
-]
 
 # search profile by username
-urlpatterns += [
+urlpatterns = [
     path('profile/<str:username>/', ProfileView.as_view())
 ]
