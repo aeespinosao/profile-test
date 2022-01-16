@@ -1,0 +1,33 @@
+{{user}}
+<div class="rela-block container">
+    <div class="rela-block profile-card">
+        <div class="profile-pic" id="profile_pic" [ngStyle]="{'background-image': 'url(' + user.person.picture + ')'}" ></div>
+        <div class="rela-block profile-name-container">
+            <div class="rela-block user-name" id="user_name">{{user.person.name}}</div>
+            <div class="rela-block user-desc" id="user_description">{{user.person.professionalHeadline}}</div>
+        </div>
+        <div class="rela-block profile-card-stats">
+            <div class="floated profile-stat" id="num_works">
+                <button (click)="activeSection('skills')"> <i class="fa fa-line-chart fa-4x"></i></button>
+            </div>
+            <div class="floated profile-stat" id="num_works">
+                <button (click)="activeSection('data')"> <i class="fa fa-dribbble fa-4x"></i></button>
+            </div>
+            <div class="floated profile-stat" id="num_works">
+                <button (click)="activeSection('experience')"> <i class="fa fa-id-badge fa-4x"></i></button>
+            </div>
+        </div>
+    </div>
+    <div class="rela-block content">
+        <div class="rela-block card" [ngSwitch]="section">
+            <app-skills *ngSwitchCase="'skills'" [user]="user"></app-skills>
+            <app-data *ngSwitchCase="'data'" [user]="user"></app-data>
+            <app-experience *ngSwitchCase="'experience'" [user]="user"></app-experience>
+        </div>
+    </div>
+</div>
+<div class="rela-block footer">
+    <p>FOOTER</p><br>
+    <p>Classic deluxe custom designer luxury prestige high-quality premium select gourmet pocket pencil
+        sharpener.<br><br>Yours for the asking, no purchase necessary. It's our way of saying thank you.</p>
+</div>
