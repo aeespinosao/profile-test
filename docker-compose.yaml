@@ -1,4 +1,15 @@
 services:
+  profile-back:
+    build:
+      context: ./profile-back
+      dockerfile: ./Dockerfile
+    volumes:
+      - ./profile-back/app:/usr/src/app/app
+    # ports:
+    #   - 8000:8000
+    expose: 
+      - "8000"
+      
   profile-front:
     build: ./profile/
     expose:
@@ -7,5 +18,7 @@ services:
      - "9876"
      - "49152"
     volumes:
-     - ./profile:/usr/src/app  
+     - ./profile:/usr/src/app
+    depends_on:
+      - profile-back
 
