@@ -16,6 +16,13 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
+from view.profile import ProfileView
+
 urlpatterns = [
     path('admin/', admin.site.urls),
+]
+
+# search profile by username
+urlpatterns += [
+    path('profile/<str:username>/', ProfileView.as_view())
 ]
