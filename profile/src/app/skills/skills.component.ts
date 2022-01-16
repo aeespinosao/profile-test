@@ -15,13 +15,13 @@ export class SkillsComponent implements OnInit {
   }
 
   skillCategories(){
-    let categories = this.user.strengths.map( (strength: any) => strength.proficiency);
+    let categories = this.user?.strengths.map( (strength: any) => strength.proficiency);
     console.log(new Set(categories))
     return Array.from(new Set(categories));
   }
 
   skillsByCategory(category: any) {
-    let skills = this.user.strengths.filter((skill: any) => skill.proficiency == category);
+    let skills = this.user?.strengths.filter((skill: any) => skill.proficiency == category);
     console.log(skills)
     return skills;
   }

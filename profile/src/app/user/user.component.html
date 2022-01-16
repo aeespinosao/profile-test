@@ -1,10 +1,10 @@
 {{user}}
 <div class="rela-block container">
     <div class="rela-block profile-card">
-        <div class="profile-pic" id="profile_pic" [ngStyle]="{'background-image': 'url(' + user.person.picture + ')'}" ></div>
+        <div class="profile-pic" id="profile_pic" [ngStyle]="{'background-image': 'url(' + user?.person.picture + ')'}" ></div>
         <div class="rela-block profile-name-container">
-            <div class="rela-block user-name" id="user_name">{{user.person.name}}</div>
-            <div class="rela-block user-desc" id="user_description">{{user.person.professionalHeadline}}</div>
+            <div class="rela-block user-name" id="user_name">{{user?.person.name}}</div>
+            <div class="rela-block user-desc" id="user_description">{{user?.person.professionalHeadline}}</div>
         </div>
         <div class="rela-block profile-card-stats">
             <div class="floated profile-stat" id="num_works">

@@ -9,6 +9,8 @@ import { SkillsComponent } from './skills/skills.component';
 import { DataComponent } from './data/data.component';
 import { ExperienceComponent } from './experience/experience.component';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { ProfileService } from './services/profile.service';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -22,9 +24,10 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
     BrowserModule,
     AppRoutingModule,
     NgbModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    HttpClientModule
   ],
-  providers: [],
+  providers: [ProfileService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
