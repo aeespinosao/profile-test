@@ -28,7 +28,9 @@ env = environ.Env(
     REQUEST_TIMEOUT=(int, 30),
     HTTP_POOL_SIZE=(int, 2),
     DEFAULT_RETRIES=(int, 4),
-    HOST=(str, "https://bio.torre.co/api")
+    HOST=(str, "https://bio.torre.co/api"),
+    CORS_ALLOWED_ORIGIN_REGEXES=(list, ["*"]),
+    CORS_ORIGIN_ALLOW_ALL=(bool, True),
 )
 # reading .env file
 # environ.Env.read_env()
@@ -53,6 +55,7 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'corsheaders',
     'django.contrib.staticfiles',
     'rest_framework'
 ]
@@ -60,6 +63,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -177,3 +181,7 @@ class SessionManager(metaclass=Singleton):
 
 
 SessionManager().initialize()
+
+
+CORS_ALLOWED_ORIGIN_REGEXES = env("CORS_ALLOWED_ORIGIN_REGEXES")
+CORS_ORIGIN_ALLOW_ALL = env("CORS_ORIGIN_ALLOW_ALL")
