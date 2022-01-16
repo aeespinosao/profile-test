@@ -12,6 +12,9 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 
 from pathlib import Path
 import environ
+import requests
+import urllib3
+from urllib3.util import Retry
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,7 +24,11 @@ env = environ.Env(
     DEBUG=(bool, True),
     SECRET_KEY=(str, '!-ww@kbxor9ag#l^@gphf)o#w9+*b3(zty3ri-@fhdadf6u8j+'),
     ALLOWED_HOSTS=(list, ['*']),
-    TIME_ZONE=(str, 'America/Bogota')
+    TIME_ZONE=(str, 'America/Bogota'),
+    REQUEST_TIMEOUT=(int, 30),
+    HTTP_POOL_SIZE=(int, 2),
+    DEFAULT_RETRIES=(int, 4),
+    HOST=(str, "https://bio.torre.co/api")
 )
 # reading .env file
 # environ.Env.read_env()
@@ -119,3 +126,54 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+
+HTTP_POOL_SIZE = env("HTTP_POOL_SIZE")
+DEFAULT_RETRIES = env("DEFAULT_RETRIES")
+REQUEST_TIMEOUT = env("REQUEST_TIMEOUT")
+SESSION_RETRY = Retry(total=DEFAULT_RETRIES, backoff_factor=1)
+HOST = env("HOST")
+
+
+DEFAULT_TIMEOUT = 5  # seconds
+
+
+class Singleton(type):
+    _instances = {}
+
+    def __call__(cls, *args, **kwargs):
+        if cls not in cls._instances:
+            cls._instances[cls] = super(
+                Singleton, cls).__call__(*args, **kwargs)
+        return cls._instances[cls]
+        
+class TimeoutHTTPAdapter(requests.adapters.HTTPAdapter):
+    def __init__(self, *args, **kwargs):
+        self.timeout = DEFAULT_TIMEOUT
+        if "timeout" in kwargs:
+            self.timeout = kwargs["timeout"]
+            del kwargs["timeout"]
+        super().__init__(*args, **kwargs)
+
+    def send(self, request, **kwargs):
+        timeout = kwargs.get("timeout")
+        if timeout is None:
+            kwargs["timeout"] = self.timeout
+        return super().send(request, **kwargs)
+
+class SessionManager(metaclass=Singleton):
+    __init=False
+    def initialize(self):
+        if self.__init: return
+        self.session = requests.Session()
+        self.session.mount("http://", TimeoutHTTPAdapter(pool_maxsize=HTTP_POOL_SIZE, pool_block=True,
+                                                         max_retries=SESSION_RETRY, timeout=int(REQUEST_TIMEOUT)))
+        self.session.mount("https://", TimeoutHTTPAdapter(pool_maxsize=HTTP_POOL_SIZE, pool_block=True,
+                                                          max_retries=SESSION_RETRY, timeout=int(REQUEST_TIMEOUT)))
+        self.__init = True
+
+    def get(self):
+        return self.session
+
+
+SessionManager().initialize()
