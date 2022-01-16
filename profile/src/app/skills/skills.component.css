@@ -1,0 +1,14 @@
+.star{
+    font-size: 1.5rem;
+    color: rgb(168, 163, 163);
+}
+
+.filled.bad {
+    color: #ff1e1e;
+}
+.filled.medium {
+  color: #1e90ff;
+}
+.filled.high{
+    color: rgb(40, 247, 40);
+}
